@@ -1,0 +1,75 @@
+{
+    "interaction": {
+        "schema": {
+            "version": 3
+        },
+        "source": "Twitter for Android",
+        "author": {
+            "username": "a_m_a_r_e_t_t_o",
+            "name": "Амаретто | 5 дн",
+            "id": 2805026746,
+            "avatar": "http://pbs.twimg.com/profile_images/518398515421003778/aAqzm1s8_normal.jpeg",
+            "link": "https://twitter.com/a_m_a_r_e_t_t_o",
+            "language": "ru"
+        },
+        "type": "twitter",
+        "created_at": "Wed, 29 Oct 2014 08:15:33 +0000",
+        "received_at": 1414570534.1866000,
+        "content": "Ранку :*\nЩасливого вам дня",
+        "id": "1e45f43c0cc0a080e07454bcedd0fa06",
+        "link": "https://twitter.com/a_m_a_r_e_t_t_o/status/527373158597554176",
+        "geo": {
+            "latitude": 47.392051000000002,
+            "longitude": 32.446303999999998
+        },
+        "tags": ["tab5"]
+    },
+    "klout": {
+        "score": 42
+    },
+    "language": {
+        "tag": "uk",
+        "tag_extended": "uk",
+        "confidence": 97
+    },
+    "twitter": {
+        "created_at": "Wed, 29 Oct 2014 08:15:33 +0000",
+        "filter_level": "medium",
+        "geo": {
+            "latitude": 47.392051000000002,
+            "longitude": 32.446303999999998
+        },
+        "id": "527373158597554176",
+        "lang": "uk",
+        "place": {
+            "id": "084d0d0155787e9d",
+            "url": "https://api.twitter.com/1.1/geo/id/084d0d0155787e9d.json",
+            "place_type": "country",
+            "country": "Ukraine",
+            "country_code": "UA",
+            "full_name": "Ukraine",
+            "name": "Ukraine",
+            "attributes": {}
+        },
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "text": "Ранку :*\nЩасливого вам дня",
+        "user": {
+            "name": "Амаретто | 5 дн",
+            "description": "п'янка , як італійський амаретто           Обожнюю хімію",
+            "statuses_count": 757,
+            "followers_count": 136,
+            "friends_count": 83,
+            "screen_name": "a_m_a_r_e_t_t_o",
+            "profile_image_url": "http://pbs.twimg.com/profile_images/518398515421003778/aAqzm1s8_normal.jpeg",
+            "profile_image_url_https": "https://pbs.twimg.com/profile_images/518398515421003778/aAqzm1s8_normal.jpeg",
+            "lang": "ru",
+            "listed_count": 4,
+            "id": 2805026746,
+            "id_str": "2805026746",
+            "geo_enabled": true,
+            "verified": false,
+            "favourites_count": 1872,
+            "created_at": "Sat, 04 Oct 2014 13:43:06 +0000"
+        }
+    }
+}
