@@ -1,24 +1,31 @@
 var config = {
-  geojson: "http://test-jonnyhoeven.c9users.io/data.geojson",
-  title: "Team Schnitzel",
+  geojson: "data.geojson.old",
+  title: "Schnitzel",
   layerName: "Movements",
-  hoverProperty: "created_at",
+  hoverProperty: "userUrl",
   sortProperty: "created_at",
   sortOrder: "desc"
 };
-
 var properties = [{
-  value: "avatar_url",
-  label: "User Avatar",
+  value: "avatar",
+  label: "Avatar",
+  table: {
+    visible: true,
+    sortable: false,
+    formatter: imgFormatter
+  }
+}, {
+  value: "created_at",
+  label: "Travel Started",
   table: {
     visible: true,
     sortable: true,
-    formatter: imgFormatter
   },
-  filter: false
-},{
-  value: "weblink_url",
-  label: "Web Link",
+  filter: {
+    type: "string"
+  },
+  value: "userUrl",
+  label: "Profile",
   table: {
     visible: true,
     sortable: true,
@@ -28,10 +35,48 @@ var properties = [{
     type: "string"
   },
   info: false
+}, {
+  value: "gender",
+  label: "Gender",
+  table: {
+    visible: true,
+    sortable: true
+  },
+  filter: {
+    type: "string"
+  },
+
+}, {
+  value: "language",
+  label: "Language",
+  table: {
+    visible: true,
+    sortable: true
+  },
+  filter: {
+    type: "string"
+  },
+
+}, {
+  value: "content",
+  label: "Post Data",
+  table: {
+    visible: false,
+    sortable: false
+  }
+},{
+  value: "color_marker",
+  label: "Color",
+  table: {
+    visible: false,
+    sortable: true,
+    formatter: colorFormatter
+  },
+  filter: {
+    type: "string"
+  }
 }];
 
-function drawCharts() {
-}
 
 $(function() {
   $(".title").html(config.title);
@@ -51,20 +96,20 @@ function buildConfig() {
     formatter: function(value, row, index) {
       return [
         '<a class="zoom" href="javascript:void(0)" title="Zoom" style="margin-right: 10px;">',
-          '<i class="fa fa-search-plus"></i>',
+        '<i class="fa fa-search-plus"></i>',
         '</a>',
         '<a class="identify" href="javascript:void(0)" title="Identify">',
-          '<i class="fa fa-info-circle"></i>',
+        '<i class="fa fa-info-circle"></i>',
         '</a>'
       ].join("");
     },
     events: {
-      "click .zoom": function (e, value, row, index) {
+      "click .zoom": function(e, value, row, index) {
         map.fitBounds(featureLayer.getLayer(row.leaflet_stamp).getBounds());
         highlightLayer.clearLayers();
         highlightLayer.addData(featureLayer.getLayer(row.leaflet_stamp).toGeoJSON());
       },
-      "click .identify": function (e, value, row, index) {
+      "click .identify": function(e, value, row, index) {
         identifyFeature(row.leaflet_stamp);
         highlightLayer.clearLayers();
         highlightLayer.addData(featureLayer.getLayer(row.leaflet_stamp).toGeoJSON());
@@ -79,10 +124,10 @@ function buildConfig() {
     if (value.filter) {
       var id;
       if (value.filter.type == "integer") {
-        id = "cast(properties->"+ value.value +" as int)";
+        id = "cast(properties->" + value.value + " as int)";
       }
       else if (value.filter.type == "double") {
-        id = "cast(properties->"+ value.value +" as double)";
+        id = "cast(properties->" + value.value + " as double)";
       }
       else {
         id = "properties->" + value.value;
@@ -95,14 +140,15 @@ function buildConfig() {
         if (filters[index]) {
           // If values array is empty, fetch all distinct values
           if (key == "values" && val.length === 0) {
-            alasql("SELECT DISTINCT(properties->"+value.value+") AS field FROM ? ORDER BY field ASC", [geojson.features], function(results){
+            alasql("SELECT DISTINCT(properties->" + value.value + ") AS field FROM ? ORDER BY field ASC", [geojson.features], function(results) {
               distinctValues = [];
               $.each(results, function(index, value) {
                 distinctValues.push(value.field);
               });
             });
             filters[index].values = distinctValues;
-          } else {
+          }
+          else {
             filters[index][key] = val;
           }
         }
@@ -115,8 +161,8 @@ function buildConfig() {
         title: value.label
       });
       $.each(value.table, function(key, val) {
-        if (table[index+1]) {
-          table[index+1][key] = val;
+        if (table[index + 1]) {
+          table[index + 1][key] = val;
         }
       });
     }
@@ -130,7 +176,7 @@ function buildConfig() {
 var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
   maxZoom: 19,
   subdomains: ["otile1", "otile2", "otile3", "otile4"],
-  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+  attribution: '<!--Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.-->'
 });
 
 var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
@@ -139,11 +185,11 @@ var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sa
 }), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
   maxZoom: 19,
   subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+  attribution: '<!--Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency-->'
 })]);
 
 var highlightLayer = L.geoJson(null, {
-  pointToLayer: function (feature, latlng) {
+  pointToLayer: function(feature, latlng) {
     return L.circleMarker(latlng, {
       radius: 5,
       color: "#FFF",
@@ -154,7 +200,7 @@ var highlightLayer = L.geoJson(null, {
       clickable: false
     });
   },
-  style: function (feature) {
+  style: function(feature) {
     return {
       color: "#00FFFF",
       weight: 2,
@@ -170,16 +216,17 @@ var featureLayer = L.geoJson(null, {
   filter: function(feature, layer) {
     return feature.geometry.coordinates[0] !== 0 && feature.geometry.coordinates[1] !== 0;
   },
-  /*style: function (feature) {
+  style: function(feature) {
     return {
-      color: feature.properties.color
+      color: feature.properties.color_marker
     };
-  },*/
-  pointToLayer: function (feature, latlng) {
-    if (feature.properties && feature.properties["marker-color"]) {
-      markerColor = feature.properties["marker-color"];
-    } else {
-      markerColor = "#FF0000";
+  },
+  pointToLayer: function(feature, latlng) {
+    if (feature.properties && feature.properties["color_marker"]) {
+      markerColor = feature.properties["color_marker"];
+    }
+    else {
+      markerColor = "#0000FF";
     }
     return L.circleMarker(latlng, {
       radius: 4,
@@ -190,21 +237,21 @@ var featureLayer = L.geoJson(null, {
       fillOpacity: 1
     });
   },
-  onEachFeature: function (feature, layer) {
+  onEachFeature: function(feature, layer) {
     if (feature.properties) {
       layer.on({
-        click: function (e) {
+        click: function(e) {
           identifyFeature(L.stamp(layer));
           highlightLayer.clearLayers();
           highlightLayer.addData(featureLayer.getLayer(L.stamp(layer)).toGeoJSON());
         },
-        mouseover: function (e) {
+        mouseover: function(e) {
           if (config.hoverProperty) {
             $(".info-control").html(feature.properties[config.hoverProperty]);
             $(".info-control").show();
           }
         },
-        mouseout: function (e) {
+        mouseout: function(e) {
           $(".info-control").hide();
         }
       });
@@ -213,7 +260,7 @@ var featureLayer = L.geoJson(null, {
 });
 
 // Fetch the GeoJSON file
-$.getJSON(config.geojson, function (data) {
+$.getJSON(config.geojson, function(data) {
   geojson = data;
   features = $.map(geojson.features, function(feature) {
     return feature.properties;
@@ -238,12 +285,12 @@ var info = L.control({
 });
 
 // Custom info hover control
-info.onAdd = function (map) {
+info.onAdd = function(map) {
   this._div = L.DomUtil.create("div", "info-control");
   this.update();
   return this._div;
 };
-info.update = function (props) {
+info.update = function(props) {
   this._div.innerHTML = "";
 };
 info.addTo(map);
@@ -252,7 +299,8 @@ $(".info-control").hide();
 // Larger screens get expanded layer control
 if (document.body.clientWidth <= 767) {
   isCollapsed = true;
-} else {
+}
+else {
   isCollapsed = false;
 }
 var baseLayers = {
@@ -267,7 +315,7 @@ var layerControl = L.control.layers(baseLayers, overlayLayers, {
 }).addTo(map);
 
 // Filter table to only show features in current map bounds
-map.on("moveend", function (e) {
+map.on("moveend", function(e) {
   syncTable();
 });
 
@@ -276,19 +324,25 @@ map.on("click", function(e) {
 });
 
 // Table formatter to make links clickable
-function urlFormatter (value, row, index) {
-  if (typeof value == "string" && (value.indexOf("http") === 0 || value.indexOf("https") === 0)) {
-    return "<a href='"+value+"' target='_blank'>"+value+"</a>";
-  }
+function urlFormatter(value, row, index) {
+    return "<a href='" + value + "' target='_blank'>" + value + "</a>";
 }
 
 // Table formatter to view avatar
-function imgFormatter (value, row, index) {
+function imgFormatter(value, row, index) {
   if (typeof value == "string" && (value.indexOf("http") === 0 || value.indexOf("https") === 0)) {
-    return "<img src='"+value+"'>";
+    return "<img src='" + value + "' width='48px' height='48px'>";
   }
 }
 
+// Table formatter to parse date
+function DateFormatter(value, row, index) {
+  var myDate = new Date(value);
+  return (myDate.toGMTString());
+}
+function colorFormatter(value, row, index) {
+    return "<span style='color:" + value + "'>" + value + "</span>";
+}
 
 function buildFilters() {
   $("#query-builder").queryBuilder({
@@ -303,11 +357,11 @@ function applyFilter() {
   if (sql.length > 0) {
     query += " WHERE " + sql;
   }
-  alasql(query, [geojson.features], function(features){
-		featureLayer.clearLayers();
-		featureLayer.addData(features);
-		syncTable();
-	});
+  alasql(query, [geojson.features], function(features) {
+    featureLayer.clearLayers();
+    featureLayer.addData(features);
+    syncTable();
+  });
 }
 
 function buildTable() {
@@ -326,17 +380,19 @@ function buildTable() {
     showColumns: true,
     showToggle: true,
     columns: table,
-    onClickRow: function (row) {
-      // do something!
+    onClickRow: function(row) {
+      //        identifyFeature(row.leaflet_stamp);
+      highlightLayer.clearLayers();
+      highlightLayer.addData(featureLayer.getLayer(row.leaflet_stamp).toGeoJSON());
     },
-    onDblClickRow: function (row) {
+    onDblClickRow: function(row) {
       // do something!
     }
   });
 
   map.fitBounds(featureLayer.getBounds());
 
-  $(window).resize(function () {
+  $(window).resize(function() {
     $("#table").bootstrapTable("resetView", {
       height: $("#table-container").height()
     });
@@ -345,7 +401,7 @@ function buildTable() {
 
 function syncTable() {
   tableFeatures = [];
-  featureLayer.eachLayer(function (layer) {
+  featureLayer.eachLayer(function(layer) {
     layer.feature.properties.leaflet_stamp = L.stamp(layer);
     if (map.hasLayer(featureLayer)) {
       if (map.getBounds().contains(layer.getBounds())) {
@@ -357,7 +413,8 @@ function syncTable() {
   var featureCount = $("#table").bootstrapTable("getData").length;
   if (featureCount == 1) {
     $("#feature-count").html($("#table").bootstrapTable("getData").length + " visible feature");
-  } else {
+  }
+  else {
     $("#feature-count").html($("#table").bootstrapTable("getData").length + " visible features");
   }
 }
@@ -369,13 +426,18 @@ function identifyFeature(id) {
     if (!value) {
       value = "";
     }
+
+
+    if (typeof value == "string" && (value.indexOf(".jpg") === value.length - 4 || value.indexOf(".png") === value.length - 4 || value.indexOf(".jpeg") === value.length - 5 || value.indexOf(".JPG") === value.length - 4)) {
+      value = "<img src='" + value + "' width='48px' height='48px'>";
+    }
     if (typeof value == "string" && (value.indexOf("http") === 0 || value.indexOf("https") === 0)) {
       value = "<a href='" + value + "' target='_blank'>" + value + "</a>";
     }
     $.each(properties, function(index, property) {
       if (key == property.value) {
         if (property.info !== false) {
-          content += "<tr><th>" + property.label + "</th><td>" + value + "</td></tr>";
+            content += "<tr><th>" + property.label + "</th><td style='word-wrap: break-word;'>" + value + "</td></tr>";
         }
       }
     });
@@ -397,7 +459,8 @@ function switchView(view) {
     if (map) {
       map.invalidateSize();
     }
-  } else if (view == "map") {
+  }
+  else if (view == "map") {
     $("#view").html("Map View");
     location.hash = "#map";
     $("#map-container").show();
@@ -406,7 +469,8 @@ function switchView(view) {
     if (map) {
       map.invalidateSize();
     }
-  } else if (view == "table") {
+  }
+  else if (view == "table") {
     $("#view").html("Table View");
     location.hash = "#table";
     $("#table-container").show();
@@ -421,10 +485,12 @@ $("[name='view']").click(function() {
   if (this.id === "map-graph") {
     switchView("split");
     return false;
-  } else if (this.id === "map-only") {
+  }
+  else if (this.id === "map-only") {
     switchView("map");
     return false;
-  } else if (this.id === "graph-only") {
+  }
+  else if (this.id === "graph-only") {
     switchView("table");
     return false;
   }
@@ -508,8 +574,4 @@ $("#download-pdf-btn").click(function() {
   });
   $(".navbar-collapse.in").collapse("hide");
   return false;
-});
-
-$("#chartModal").on("shown.bs.modal", function (e) {
-  drawCharts();
 });

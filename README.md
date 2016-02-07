@@ -1,17 +1,15 @@
 # Schnitzel
-Super Correct, Hardly New, Intelligent Traveling Zombie Epidemic Locator.
-A compact geojson opendata parser displaying twitter user with travel behaviour between geographical conflict areas and europe.
-User returing to europe are colored red on the map with most relevant info at your fingertips.
+Super Correct, Hardly New, Intelligent Traveling Zombie, Epic Locator.
+A compact geojson opendata parser filtering twitter users with specific travel behaviour between geographical areas.
 
 ## Made during the AVID Hackathon 2016.
-By a great team consisting of:
+By team Schnitzel consisting of:
 
-*
-*
-*
-*
+* Albert Eriks
+* Tyas v.d. Spree
+* Erik Kamp
+* Gijs....
 * and Jonny van der Hoeven
-
 
 ## Features
 
