@@ -1,5 +1,5 @@
 # Schnitzel
-Super Correct, Hardly New, Intelligent Technical Zombie Epidemic Locator.
+Super Correct, Hardly New, Intelligent Traveling Zombie Epidemic Locator.
 A compact geojson opendata parser displaying twitter user with travel behaviour between geographical conflict areas and europe.
 User returing to europe are colored red on the map with most relevant info at your fingertips.
 
