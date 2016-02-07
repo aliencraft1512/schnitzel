@@ -1,30 +1,24 @@
-# geojson-dashboard
-A configurable framework for building a geographic "data dashboard" from a GeoJSON file.
+# Schnitzel
+Super Correct, Hardly New, Intelligent Technical Zombie Epidemic Locator.
+A compact geojson opendata parser displaying twitter user with travel behaviour between geographical conflict areas and europe.
+User returing to europe are colored red on the map with most relevant info at your fingertips.
+
+## Made during the AVID Hackathon 2016.
+By a great team consisting of:
+
+*
+*
+*
+*
+* and Jonny van der Hoeven
+
 
 ## Features
 
-* Flexible template built on active open source components
+* Flexible parser in java uses opendata from twitter.
 * Entirely client-side, can be hosted for free on [GitHub Pages](https://pages.github.com/)
 * Built on the incredibly popular [Bootstrap](http://getbootstrap.com/) UI framework
 * Maps via [Leaflet](http://leafletjs.com/), the leading open source JavaScript mapping library
 * Interactive data table with sorting, searching, column toggling, and data export via the [Bootstrap Table](http://bootstrap-table.wenzhixin.net.cn/) plugin
 * Advanced, interactive GeoJSON data querying that integrates [jQuery QueryBuilder](http://mistic100.github.io/jQuery-QueryBuilder/index.html) with [AlaSQL](http://alasql.org/)
-* Advanced charting via [C3.js](http://c3js.org/), the D3-based reusable chart library
 
-## Screenshots
-
-Split screen view
-
-![Map](https://raw.githubusercontent.com/fulcrumapp/geojson-dashboard/gh-pages/screenshots/map.png)
-
-Feature Info popup
-
-![Info](https://raw.githubusercontent.com/fulcrumapp/geojson-dashboard/gh-pages/screenshots/info.png)
-
-Interactive charts
-
-![Charts](https://raw.githubusercontent.com/fulcrumapp/geojson-dashboard/gh-pages/screenshots/charts.png)
-
-SQL query filters
-
-![Filter](https://raw.githubusercontent.com/fulcrumapp/geojson-dashboard/gh-pages/screenshots/filter.png)
