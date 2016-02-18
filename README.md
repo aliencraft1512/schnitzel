@@ -2,14 +2,13 @@
 Super Correct, Hardly New, Intelligent Traveling Zombie, Epic Locator.
 A compact geojson opendata parser filtering twitter users with specific travel behaviour between geographical areas.
 
-## Made during the AVID Hackathon 2016.
+## Made during some Hackathon in 2016.
 By team Schnitzel consisting of:
 
-* Albert Eriks
 * Tyas v.d. Spree
 * Erik Kamp
-* Gijs....
-* and Jonny van der Hoeven
+* Gijs
+* Jonny van der Hoeven
 
 ## Features
 
