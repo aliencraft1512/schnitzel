@@ -1,4 +1,7 @@
-# Twitter OpenData GeoJSON parser 
+# Twitter OpenData GeoJSON parser
+
+![Screenshot](http://jonnyhoeven.github.io/images/schnitzel.jpg)
+
 A compact geojson opendata parser filtering twitter users with specific travel behaviour between geographical areas.
 
 ## during a Hackathon in 2016.
